@@ -1,8 +1,5 @@
 import java.util.ArrayList;
 import java.util.Scanner;
-
-
-
 public class LibraryApp{
 
     static Scanner sc = new Scanner(System.in);

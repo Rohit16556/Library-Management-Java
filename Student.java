@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
 class Student {
-
     String username;
     String password;
 

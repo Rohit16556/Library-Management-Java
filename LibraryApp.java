@@ -271,7 +271,8 @@ private void studentRegister() {
 
     if(findStudent(username) != null) {
         System.out.println("Username already exits.");
-        return;
+
+		studentLogin();
     }
 
     System.out.print("Enter password: ");
@@ -290,6 +291,7 @@ private void studentRegister() {
 }
 
 private void studentLogin() {
+	
     clearScreen();
    
 	System.out.println("\nCandidate login: ");

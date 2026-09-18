@@ -1,5 +1,11 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.io.File;
 
 public class LibraryApp {
 
@@ -12,8 +18,15 @@ public class LibraryApp {
     ArrayList<Student> students = new ArrayList<>();
     ArrayList<String[]> borrowedBooks = new ArrayList<>();
 
+	String dataFile = "data/library.data";
+
 	public static void main(String[] args) {
 		LibraryApp lab = new LibraryApp();
+
+		lab.createDataFolder();
+
+		lab.loadData();
+		
 		lab.start();
 	}
 
@@ -25,7 +38,15 @@ private void clearScreen() {
     }
 }
 
+private void createDataFolder() {
+	
+	File folder = new File("data");
 
+	if(!folder.exits()) {
+		folder.mkdir();
+	}
+}
+	
 public void start() {
         System.out.println("  Welcome to the library.. ");
 
@@ -81,7 +102,9 @@ private void adminLogin() {
 	    	return;
 
     	} else {
+			
 			System.out.println("Invalid Username or Password.");
+			
 			start();
 		}
 	}
@@ -107,21 +130,27 @@ private void adminMenu() {
             sc.nextLine();
 
             switch(ch) {
+					
                 case 1:
                 	registerBook();
                     	break;
+					
                 case 2:
                 	updateQuantity();
                     	break;
+					
                 case 3:
                    	borrowedBooks();
                     	break;
+					
                 case 4:
                 	viewAllBooks();
                	     	break;
+					
                 case 5:
                         System.out.println("Log out.");
                         start();
+					
 						return;
                   
                 default:
@@ -149,6 +178,8 @@ private void registerBook() {
     	Book book = new Book(name, author, quantity);
     
 		books.add(book);
+
+	  	saveData();
     	
 		System.out.println("Book registered successfully.");
     }
@@ -207,6 +238,8 @@ private void updateQuantity() {
 	if(book.available < 0 ) {
 		book.available = 0;
 	}	
+
+	saveData();
   
 	System.out.println("Books updated succefully.");
 }
@@ -240,9 +273,12 @@ private void studentRegister() {
     Student student = new Student(username, password);
    
 	students.add(student);
-    
+
+	saveData();
+	
 	System.out.println("Registration successful.");
-    studentLogin();
+    
+	studentLogin();
 }
 
 private void studentLogin() {
@@ -268,9 +304,11 @@ private void studentLogin() {
     }
 
     if(!student.password.equals(password)) {
+		
     	System.out.println("password does not match.");
     	
 		studentRegister();
+		
         return;
     }
 
@@ -400,6 +438,8 @@ private void borrowBook(Student student) {
     student.borrowedBooks.add(book.name);
    
 	borrowedBooks.add(new String[]{student.username, book.name});
+
+	saveData();
     
 	System.out.println("book borrowed sucessfully.");
 }
@@ -442,6 +482,8 @@ private void returnBook(Student student) {
 			break;
 		}
 	}
+
+	saveData();
 	
     System.out.println("Book submit back to the lab successfully...");
 }
@@ -461,6 +503,51 @@ private void borrowedBooks() {
 		String[] records = borrowedBooks.get(i);
 	
 		System.out.println(records[0] + "                  " + records[1]);
+		}
+	}
+
+private void saveDate() {
+
+	try {
+		
+		ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(dataFile));
+
+		output.writeObject(books);
+
+		output.writeObject(students);
+
+		output.writeObject(borrowedBooks);
+
+		output.close();
+
+		} catch(IOException e) {
+
+		e.printStackTrace();
+	}
+}
+
+@SuppressWarnings("unchecked")
+private void loadData() {
+
+	try {
+
+		ObjectInputStream input = new ObjectInputStream(new FileInputStream(dataFile));
+	
+		books = ((ArrayList<Book>) input.readObject());
+
+		students = (ArrayList<Student>) input.readObject();
+
+		borrowedBooks = (ArrayList<String[]>) input.readObject();
+
+		input.close();
+
+		} catch(IOException e) {
+	
+	        System.out.println("No saved data found.");
+
+		} catch(ClassNotFoundException  e) {
+		
+		e.printStackTrace();
 		}
 	}
 }

@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.io.Serializable;
 
-class Student {
+class Student implements Serializable {
     String username;
     String password;
 

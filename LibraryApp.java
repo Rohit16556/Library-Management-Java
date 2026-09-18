@@ -60,6 +60,7 @@ public void start() {
         System.out.print("Enter your choice: ");
 
         int choice = sc.nextInt();
+	
         sc.nextLine();
 
         switch (choice) {
@@ -131,6 +132,7 @@ private void adminMenu() {
             System.out.print("\nEnter choice: ");
 
             ch = sc.nextInt();
+			
             sc.nextLine();
 
             switch(ch) {
@@ -273,6 +275,7 @@ private void studentRegister() {
         System.out.println("Username already exits.");
 
 		studentLogin();
+		return;
     }
 
     System.out.print("Enter password: ");
@@ -360,6 +363,7 @@ private void studentMenu(Student student){
             case 4:
                 System.out.println("Logged out.");
                 start();
+				break;
 
             default:
                 System.out.println("Invalid choice.");

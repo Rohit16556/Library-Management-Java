@@ -20,7 +20,8 @@ public class LibraryApp {
 
 	String dataFile = "data/library.data";
 
-	public static void main(String[] args) {
+public static void main(String[] args) {
+		
 		LibraryApp lab = new LibraryApp();
 
 		lab.createDataFolder();
@@ -42,12 +43,13 @@ private void createDataFolder() {
 	
 	File folder = new File("data");
 
-	if(!folder.exits()) {
+	if(!folder.exists()) {
 		folder.mkdir();
 	}
 }
 	
 public void start() {
+	
         System.out.println("  Welcome to the library.. ");
 
         System.out.println("\n1. Admin Login");
@@ -61,6 +63,7 @@ public void start() {
         sc.nextLine();
 
         switch (choice) {
+				
             case 1:
                 adminLogin();
                 break;
@@ -83,6 +86,7 @@ public void start() {
 }
 
 private void adminLogin() {
+	
 		clearScreen();
 	
         System.out.println("Admin Login..");
@@ -161,6 +165,7 @@ private void adminMenu() {
 	}
 
 private void registerBook() {
+	
 		clearScreen();
     	
 		System.out.println("Register new book..");
@@ -213,6 +218,7 @@ private Student findStudent(String name) {
 }
 
 private void updateQuantity() {
+	
 	System.out.println("Update Books Quantity.");
         
 	System.out.println("Enter book name: ");
@@ -229,6 +235,7 @@ private void updateQuantity() {
 	System.out.println("Available quantity: " + book.available);
 
 	System.out.println("Enter new total quantity: ");
+	
 	int newquantity = sc.nextInt();
 	sc.nextLine();
 
@@ -256,8 +263,8 @@ private Book findBook(String name) {
 }
 
 private void studentRegister() {
-    System.out.println();
-    System.out.println("Register new student: ");
+	
+    System.out.println("\nRegister new student: ");
 
     System.out.print("Enter username: ");
     String username = sc.nextLine();
@@ -268,6 +275,7 @@ private void studentRegister() {
     }
 
     System.out.print("Enter password: ");
+	
     String password = sc.nextLine();
 
     Student student = new Student(username, password);
@@ -350,7 +358,6 @@ private void studentMenu(Student student){
             case 4:
                 System.out.println("Logged out.");
                 start();
-                return;
 
             default:
                 System.out.println("Invalid choice.");
@@ -373,6 +380,7 @@ private void viewBooks() {
     int start = 0;
 
     while(start < books.size()) {
+		
         int end = Math.min(start + pageSize, books.size());
 
         System.out.println();
@@ -408,20 +416,21 @@ private void borrowBook(Student student) {
     System.out.println("\nborrow book: ");
 
     System.out.print("Enter book name: ");
+	
     String name = sc.nextLine();
 
     Book book=findBook(name);
 
-    if(student.borrowedBooks.contains(book.name)) {
-       
-		System.out.println("You already borrowed this book.");
+	    if(book==null){
+        
+		System.out.println("Book not found.");
         
 		return;
     }
 
-    if(book==null){
-        
-		System.out.println("Book not found.");
+    if(student.borrowedBooks.contains(book.name)) {
+       
+		System.out.println("You already borrowed this book.");
         
 		return;
     }
@@ -446,10 +455,10 @@ private void borrowBook(Student student) {
 
 private void returnBook(Student student) {
 
-    System.out.println();
-    System.out.println("Return book");
+    System.out.println("\nReturn book");
 
     System.out.print("Enter book name: ");
+	
     String name = sc.nextLine();
 
     Book book = findBook(name);
@@ -479,6 +488,7 @@ private void returnBook(Student student) {
 		if(record[0].equals(student.username) && record[1].equals(book.name)) {
 			
 			borrowedBooks.remove(i);
+			
 			break;
 		}
 	}
@@ -493,6 +503,7 @@ private void borrowedBooks() {
 	if(borrowedBooks.isEmpty()){
 		
 		System.out.println("No one has borrowed any book. ");
+		
 		return;
 	}
 	
@@ -503,10 +514,10 @@ private void borrowedBooks() {
 		String[] records = borrowedBooks.get(i);
 	
 		System.out.println(records[0] + "                  " + records[1]);
-		}
 	}
+}
 
-private void saveDate() {
+private void saveData() {
 
 	try {
 		
